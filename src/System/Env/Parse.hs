@@ -1,20 +1,38 @@
 module System.Env.Parse
-    ( Variable
-    , readVariable
+    ( Environment
+    , Variable
+    , parseEnvironment
     , parseVariable
     ) where
 
 import Control.Applicative ((<$>), (<*>))
+import Data.Maybe (catMaybes)
 
 import Text.Parsec
 import Text.Parsec.String
 
+type Environment = [Variable]
 type Variable = (String, String)
 
-readVariable :: String -> Maybe Variable
-readVariable ln = case parse parseVariable "" ln of
-    Left _    -> Nothing
-    Right var -> Just var
+parseEnvironment :: Parser Environment
+parseEnvironment = fmap catMaybes $ many1 parseLine
+
+parseLine :: Parser (Maybe Variable)
+parseLine = try (fmap Just $ parseVariable) <|> ignoreLine
+
+ignoreLine :: Parser (Maybe Variable)
+ignoreLine = (commentLine <|> blankLine) >> return Nothing
+
+commentLine :: Parser ()
+commentLine = do
+    _ <- spaces
+    _ <- char '#'
+    _ <- manyTill anyToken (char '\n')
+
+    return ()
+
+blankLine :: Parser ()
+blankLine = many1 space >> return ()
 
 parseVariable :: Parser Variable
 parseVariable = (,) <$> identifier <*> value

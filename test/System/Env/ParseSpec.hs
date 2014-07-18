@@ -10,6 +10,23 @@ main = hspec spec
 
 spec :: Spec
 spec = do
+    describe "parseEnvironment" $ do
+        it "parses variable declarations among comments and blank linkes" $ do
+            let input = unlines
+                    [ "# An environment file"
+                    , "FOO=bar"
+                    , "BAZ=\"bat\""
+                    , ""
+                    , "# vim ft:sh:"
+                    ]
+                expected = [("FOO", "bar"), ("BAZ", "bat")]
+
+                result = parse parseEnvironment "" input
+
+            case result of
+                Left err -> assertFailure $ "Parse failure: " ++ show err
+                Right v  -> v `shouldBe` expected
+
     describe "parseVariable" $ do
         it "reads unquoted variables" $ do
             "FOO=bar\n" `shouldParseTo` ("FOO", "bar")
