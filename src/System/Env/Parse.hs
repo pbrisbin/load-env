@@ -30,9 +30,9 @@ identifier = do
 
 value :: Parser String
 value = do
-    v <- quotedValue <|> unquotedValue <|> emptyValue
-    _ <- spaces
-    eof
+    v <- quotedValue <|> unquotedValue <|> return ""
+    _ <- many $ oneOf " \t"
+    _ <- char '\n'
 
     return v
 
@@ -43,10 +43,7 @@ quotedValue = do
     manyTill (try (escaped q) <|> anyToken) (char q)
 
 unquotedValue :: Parser String
-unquotedValue = many1 $ try (escaped ' ') <|> (noneOf "\"' \n\t")
-
-emptyValue :: Parser String
-emptyValue = eof >> return ""
+unquotedValue = many1 $ try (escaped ' ') <|> (noneOf "\"' \n")
 
 escaped :: Char -> Parser Char
 escaped c = string ("\\" ++ [c]) >> return c

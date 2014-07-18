@@ -12,43 +12,43 @@ spec :: Spec
 spec = do
     describe "parseVariable" $ do
         it "reads unquoted variables" $ do
-            "FOO=bar" `shouldParseTo` ("FOO", "bar")
+            "FOO=bar\n" `shouldParseTo` ("FOO", "bar")
 
         it "reads quoted variables" $ do
-            "FOO=\"bar\"" `shouldParseTo` ("FOO", "bar")
-            "FOO='bar'" `shouldParseTo` ("FOO", "bar")
+            "FOO=\"bar\"\n" `shouldParseTo` ("FOO", "bar")
+            "FOO='bar'\n" `shouldParseTo` ("FOO", "bar")
 
         it "handles empty values" $ do
-            "FOO=" `shouldParseTo` ("FOO", "")
+            "FOO=\n" `shouldParseTo` ("FOO", "")
 
         it "handles empty quoted values" $ do
-            "FOO=\"\"" `shouldParseTo` ("FOO", "")
-            "FOO=''" `shouldParseTo` ("FOO", "")
+            "FOO=\"\"\n" `shouldParseTo` ("FOO", "")
+            "FOO=''\n" `shouldParseTo` ("FOO", "")
 
         it "treats leading spaces as invalid" $ do
-            expectFailedParse "  FOO=bar"
+            expectFailedParse "  FOO=bar\n"
 
         it "treats spaces around equals as invalid" $ do
-            expectFailedParse "FOO = bar"
+            expectFailedParse "FOO = bar\n"
 
         it "treats unquoted spaces as invalid" $ do
-            expectFailedParse "FOO=bar baz"
+            expectFailedParse "FOO=bar baz\n"
 
         it "treats unbalanced quotes as invalid" $ do
-            expectFailedParse "FOO=\"bar"
-            expectFailedParse "FOO='bar"
-            expectFailedParse "FOO=bar\""
-            expectFailedParse "FOO=bar'"
+            expectFailedParse "FOO=\"bar\n"
+            expectFailedParse "FOO='bar\n"
+            expectFailedParse "FOO=bar\"\n"
+            expectFailedParse "FOO=bar'\n"
 
         it "handles escaped quotes" $ do
-            "FOO=\"bar\\\"baz\"" `shouldParseTo` ("FOO", "bar\"baz")
-            "FOO='bar\\'baz'" `shouldParseTo` ("FOO", "bar'baz")
+            "FOO=\"bar\\\"baz\"\n" `shouldParseTo` ("FOO", "bar\"baz")
+            "FOO='bar\\'baz'\n" `shouldParseTo` ("FOO", "bar'baz")
 
         it "handles escaped spaces" $ do
-            "FOO=bar\\ baz" `shouldParseTo` ("FOO", "bar baz")
+            "FOO=bar\\ baz\n" `shouldParseTo` ("FOO", "bar baz")
 
         it "discards any lines using `export'" $ do
-            "export FOO=bar" `shouldParseTo` ("FOO", "bar")
+            "export FOO=bar\n" `shouldParseTo` ("FOO", "bar")
 
 shouldParseTo :: String -> Variable -> Expectation
 shouldParseTo input expected =
