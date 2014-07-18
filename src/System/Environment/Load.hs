@@ -1,12 +1,13 @@
-module System.Env.Load
+module System.Environment.Load
     ( loadEnv
     , loadEnvFrom
     ) where
 
+
 import System.Environment (setEnv)
 import Text.Parsec.String (parseFromFile)
 
-import System.Env.Parse
+import System.Environment.Parse
 
 -- |
 --

@@ -1,4 +1,4 @@
-module System.Env.Parse
+module System.Environment.Parse
     ( Environment
     , Variable
     , parseEnvironment
