@@ -1,4 +1,4 @@
-module System.Environment.Load
+module LoadEnv
     ( loadEnv
     , loadEnvFrom
     ) where
@@ -7,7 +7,7 @@ module System.Environment.Load
 import System.Environment (setEnv)
 import Text.Parsec.String (parseFromFile)
 
-import System.Environment.Parse
+import LoadEnv.Parse
 
 -- |
 --

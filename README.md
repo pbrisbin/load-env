@@ -27,8 +27,8 @@ This library exposes functions for doing just that.
 ## Usage
 
 ```haskell
+import LoadEnv
 import System.Environment (lookupEnv)
-import System.Environment.Load
 
 main :: IO ()
 main = do

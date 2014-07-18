@@ -1,10 +1,10 @@
-module System.Environment.ParseSpec (main, spec) where
+module LoadEnv.ParseSpec (main, spec) where
 
 import Text.Parsec (parse)
 
 import Test.Hspec
 import Test.HUnit
-import System.Environment.Parse
+import LoadEnv.Parse
 
 main :: IO ()
 main = hspec spec

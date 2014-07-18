@@ -17,8 +17,8 @@ Library
   Default-Language:     Haskell2010
   HS-Source-Dirs:       src
   GHC-Options:          -Wall -Werror
-  Exposed-Modules:      System.Environment.Load
-                      , System.Environment.Parse
+  Exposed-Modules:      LoadEnv
+                      , LoadEnv.Parse
   Build-Depends:        base >= 4.6.0 && < 5
                       , parsec
 
