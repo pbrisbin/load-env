@@ -12,7 +12,7 @@ Build-Type:             Simple
 Library
   Default-Language:     Haskell2010
   HS-Source-Dirs:       src
-  GHC-Options:          -Wall
+  GHC-Options:          -Wall -Werror
   Exposed-Modules:      System.Env.Load
                       , System.Env.Parse
   Build-Depends:        base >= 4.6.0 && < 5
@@ -22,7 +22,7 @@ Test-Suite spec
   Type:                 exitcode-stdio-1.0
   Default-Language:     Haskell2010
   Hs-Source-Dirs:       test
-  Ghc-Options:          -Wall
+  Ghc-Options:          -Wall -Werror
   Main-Is:              Spec.hs
   Build-Depends:        base
                       , load-env
