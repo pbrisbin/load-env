@@ -12,7 +12,7 @@ main = hspec spec
 spec :: Spec
 spec = do
     describe "parseEnvironment" $ do
-        it "parses variable declarations among comments and blank linkes" $ do
+        it "parses variable declarations among comments and blank lines" $ do
             let input = unlines
                     [ "# An environment file"
                     , "FOO=bar"
