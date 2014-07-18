@@ -43,6 +43,9 @@ spec = do
             "FOO=\"\"\n" `shouldParseTo` ("FOO", "")
             "FOO=''\n" `shouldParseTo` ("FOO", "")
 
+        it "handles underscored variables" $ do
+            "FOO_BAR=baz\n" `shouldParseTo` ("FOO_BAR", "baz")
+
         it "treats leading spaces as invalid" $ do
             expectFailedParse "  FOO=bar\n"
 

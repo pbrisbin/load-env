@@ -41,7 +41,7 @@ identifier :: Parser String
 identifier = do
     optional $ between spaces spaces $ string "export"
 
-    i <- many1 letter
+    i <- many1 $ letter <|> char '_'
     _ <- char '='
 
     return i
