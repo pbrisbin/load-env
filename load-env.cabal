@@ -1,0 +1,32 @@
+Name:                   load-env
+Version:                0.0.0
+Author:                 Pat Brisbin <pbrisbin@gmail.com>
+Maintainer:             Pat Brisbin <pbrisbin@gmail.com>
+License:                BSD3
+License-File:           LICENSE
+-- Synopsis:               
+-- Description:            
+Cabal-Version:          >= 1.10
+Build-Type:             Simple
+
+Library
+  Default-Language:     Haskell2010
+  HS-Source-Dirs:       src
+  GHC-Options:          -Wall
+  Exposed-Modules:      System.Env.Load
+                      , System.Env.Load.Internal
+  Build-Depends:        base >= 4.6.0 && < 5
+
+Test-Suite spec
+  Type:                 exitcode-stdio-1.0
+  Default-Language:     Haskell2010
+  Hs-Source-Dirs:       test
+  Ghc-Options:          -Wall
+  Main-Is:              Spec.hs
+  Build-Depends:        base
+                      , load-env
+                      , hspec
+
+Source-Repository head
+  Type:                 git
+--  Location:             
