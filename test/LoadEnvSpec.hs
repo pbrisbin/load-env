@@ -26,6 +26,11 @@ spec = after cleanup $ do
             mbar `shouldBe` Just "bar"
             mbat `shouldBe` Just "bat"
 
+        it "does not fail if the file is not present" $ do
+            loadEnvFrom "i-do-not-exist"
+
+            return ()
+
 cleanup :: IO ()
 cleanup = do
     e <- doesFileExist envFile

@@ -4,6 +4,8 @@ module LoadEnv
     ) where
 
 
+import Control.Monad (when)
+import System.Directory (doesFileExist)
 import System.Environment (setEnv)
 import Text.Parsec.String (parseFromFile)
 
@@ -33,6 +35,8 @@ loadEnv :: IO ()
 loadEnv = loadEnvFrom ".env"
 
 loadEnvFrom :: FilePath -> IO ()
-loadEnvFrom fp =
-    parseFromFile parseEnvironment fp >>= either
+loadEnvFrom fp = do
+    e <- doesFileExist fp
+
+    when e $ parseFromFile parseEnvironment fp >>= either
         (putStrLn . show) (mapM_ $ uncurry setEnv)

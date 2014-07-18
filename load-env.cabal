@@ -20,6 +20,7 @@ Library
   Exposed-Modules:      LoadEnv
                       , LoadEnv.Parse
   Build-Depends:        base >= 4.7.0 && < 5
+                      , directory
                       , parsec
 
 Test-Suite spec
