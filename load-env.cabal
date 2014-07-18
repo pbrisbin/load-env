@@ -4,8 +4,12 @@ Author:                 Pat Brisbin <pbrisbin@gmail.com>
 Maintainer:             Pat Brisbin <pbrisbin@gmail.com>
 License:                BSD3
 License-File:           LICENSE
--- Synopsis:               
--- Description:            
+Synopsis:               Load environment variables from a file.
+Description:            Parse a .env file and load any declared variables into
+                        the current process's environment. This allows for a
+                        .env file to specify development-friendly defaults for
+                        configuration values normally set in the deployment
+                        environment.
 Cabal-Version:          >= 1.10
 Build-Type:             Simple
 
@@ -33,4 +37,4 @@ Test-Suite spec
 
 Source-Repository head
   Type:                 git
---  Location:             
+  Location:             https://github.com/pbrisbin/load-env
