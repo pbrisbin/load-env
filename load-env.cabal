@@ -26,6 +26,7 @@ Test-Suite spec
   Main-Is:              Spec.hs
   Build-Depends:        base
                       , load-env
+                      , directory
                       , hspec
                       , HUnit
                       , parsec
