@@ -19,7 +19,7 @@ Library
   GHC-Options:          -Wall
   Exposed-Modules:      LoadEnv
                       , LoadEnv.Parse
-  Build-Depends:        base >= 4.6.0 && < 5
+  Build-Depends:        base >= 4.7.0 && < 5
                       , parsec
 
 Test-Suite spec
