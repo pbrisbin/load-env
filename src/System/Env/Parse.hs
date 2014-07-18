@@ -1,4 +1,4 @@
-module System.Env.Load.Internal
+module System.Env.Parse
     ( Variable
     , readVariable
     , parseVariable
@@ -43,7 +43,7 @@ quotedValue = do
     manyTill (try (escaped q) <|> anyToken) (char q)
 
 unquotedValue :: Parser String
-unquotedValue = many1 $ try (escaped ' ') <|> (noneOf "\"' ")
+unquotedValue = many1 $ try (escaped ' ') <|> (noneOf "\"' \n\t")
 
 emptyValue :: Parser String
 emptyValue = eof >> return ""

@@ -7,7 +7,7 @@ import Control.Monad ((<=<))
 import Data.Maybe (mapMaybe)
 import System.Environment (setEnv)
 
-import System.Env.Load.Internal
+import System.Env.Parse
 
 type Environment = [Variable]
 

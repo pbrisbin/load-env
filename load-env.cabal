@@ -14,7 +14,7 @@ Library
   HS-Source-Dirs:       src
   GHC-Options:          -Wall
   Exposed-Modules:      System.Env.Load
-                      , System.Env.Load.Internal
+                      , System.Env.Parse
   Build-Depends:        base >= 4.6.0 && < 5
                       , parsec
 
@@ -27,6 +27,8 @@ Test-Suite spec
   Build-Depends:        base
                       , load-env
                       , hspec
+                      , HUnit
+                      , parsec
 
 Source-Repository head
   Type:                 git
