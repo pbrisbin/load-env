@@ -16,6 +16,7 @@ Library
   Exposed-Modules:      System.Env.Load
                       , System.Env.Load.Internal
   Build-Depends:        base >= 4.6.0 && < 5
+                      , parsec
 
 Test-Suite spec
   Type:                 exitcode-stdio-1.0
