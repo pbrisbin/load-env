@@ -29,7 +29,7 @@ import LoadEnv.Parse
 --
 -- If you wish to specify your own file, use @'loadEnvFrom'@. If you wish to
 -- pass your own string or work with the parse result directly, use the
--- lower-level functions available in @"System.Env.Parse"@.
+-- lower-level functions available in @"LoadEnv.Parse"@.
 --
 loadEnv :: IO ()
 loadEnv = loadEnvFrom ".env"
