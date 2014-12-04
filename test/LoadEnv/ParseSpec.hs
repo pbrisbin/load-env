@@ -11,7 +11,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do
-    describe "parseEnvironment" $ do
+    describe "parseEnvironment" $
         it "parses variable declarations among comments and blank lines" $ do
             let input = unlines
                     [ "# An environment file"
@@ -29,30 +29,30 @@ spec = do
                 Right v  -> v `shouldBe` expected
 
     describe "parseVariable" $ do
-        it "reads unquoted variables" $ do
+        it "reads unquoted variables" $
             "FOO=bar\n" `shouldParseTo` ("FOO", "bar")
 
         it "reads quoted variables" $ do
             "FOO=\"bar\"\n" `shouldParseTo` ("FOO", "bar")
             "FOO='bar'\n" `shouldParseTo` ("FOO", "bar")
 
-        it "handles empty values" $ do
+        it "handles empty values" $
             "FOO=\n" `shouldParseTo` ("FOO", "")
 
         it "handles empty quoted values" $ do
             "FOO=\"\"\n" `shouldParseTo` ("FOO", "")
             "FOO=''\n" `shouldParseTo` ("FOO", "")
 
-        it "handles underscored variables" $ do
+        it "handles underscored variables" $
             "FOO_BAR=baz\n" `shouldParseTo` ("FOO_BAR", "baz")
 
-        it "treats leading spaces as invalid" $ do
+        it "treats leading spaces as invalid" $
             expectFailedParse "  FOO=bar\n"
 
-        it "treats spaces around equals as invalid" $ do
+        it "treats spaces around equals as invalid" $
             expectFailedParse "FOO = bar\n"
 
-        it "treats unquoted spaces as invalid" $ do
+        it "treats unquoted spaces as invalid" $
             expectFailedParse "FOO=bar baz\n"
 
         it "treats unbalanced quotes as invalid" $ do
@@ -65,10 +65,10 @@ spec = do
             "FOO=\"bar\\\"baz\"\n" `shouldParseTo` ("FOO", "bar\"baz")
             "FOO='bar\\'baz'\n" `shouldParseTo` ("FOO", "bar'baz")
 
-        it "handles escaped spaces" $ do
+        it "handles escaped spaces" $
             "FOO=bar\\ baz\n" `shouldParseTo` ("FOO", "bar baz")
 
-        it "discards any lines using `export'" $ do
+        it "discards any lines using `export'" $
             "export FOO=bar\n" `shouldParseTo` ("FOO", "bar")
 
 shouldParseTo :: String -> Variable -> Expectation

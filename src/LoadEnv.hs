@@ -38,5 +38,5 @@ loadEnvFrom :: FilePath -> IO ()
 loadEnvFrom fp = do
     e <- doesFileExist fp
 
-    when e $ parseFromFile parseEnvironment fp >>= either
-        (putStrLn . show) (mapM_ $ uncurry setEnv)
+    when e $ parseFromFile parseEnvironment fp >>=
+        either print (mapM_ $ uncurry setEnv)

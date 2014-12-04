@@ -34,7 +34,7 @@ main :: IO ()
 main = do
     loadEnv
 
-    putStrLn . show =<< lookupEnv "FOO"
+    print =<< lookupEnv "FOO"
 
 -- % cat .env
 -- FOO=bar

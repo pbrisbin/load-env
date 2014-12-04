@@ -11,7 +11,7 @@ main :: IO ()
 main = hspec spec
 
 spec :: Spec
-spec = after_ cleanup $ do
+spec = after_ cleanup $
     describe "loadEnv" $ do
         it "loads environment variables from ./.env if present" $ do
             writeFile envFile $ unlines

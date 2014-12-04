@@ -16,10 +16,10 @@ type Environment = [Variable]
 type Variable = (String, String)
 
 parseEnvironment :: Parser Environment
-parseEnvironment = fmap catMaybes $ many1 parseLine
+parseEnvironment = catMaybes <$> many1 parseLine
 
 parseLine :: Parser (Maybe Variable)
-parseLine = try (fmap Just $ parseVariable) <|> ignoreLine
+parseLine = try (fmap Just parseVariable) <|> ignoreLine
 
 ignoreLine :: Parser (Maybe Variable)
 ignoreLine = (commentLine <|> blankLine) >> return Nothing
@@ -62,7 +62,7 @@ quotedValue = do
     manyTill (try (escaped q) <|> anyToken) (char q)
 
 unquotedValue :: Parser String
-unquotedValue = many1 $ try (escaped ' ') <|> (noneOf "\"' \n")
+unquotedValue = many1 $ try (escaped ' ') <|> noneOf "\"' \n"
 
 escaped :: Char -> Parser Char
 escaped c = string ("\\" ++ [c]) >> return c
