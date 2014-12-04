@@ -5,7 +5,7 @@ module LoadEnv.Parse
     , parseVariable
     ) where
 
-import Control.Applicative ((<$>), (<*>))
+import Control.Applicative ((<$>))
 import Control.Monad (void)
 import Data.Maybe (catMaybes)
 
@@ -31,26 +31,22 @@ possibly p = try (fmap Just p) <|> ignored
 
 parseVariable :: Parser Variable
 parseVariable = do
-    v <- (,) <$> identifier <*> value
-    void $ newline
-    return v
-
-identifier :: Parser String
-identifier = do
     optional $ between spaces spaces $ string "export"
 
-    i <- many1 $ letter <|> char '_'
+    i <- identifier
     void $ char '='
 
-    return i
+    v <- value
+    void $ many $ oneOf " \t"
+    void $ newline
+
+    return (i, v)
+
+identifier :: Parser String
+identifier = many1 $ letter <|> char '_'
 
 value :: Parser String
-value = do
-    v <- quotedValue <|> unquotedValue <|> return ""
-
-    void $ many $ oneOf " \t"
-
-    return v
+value = quotedValue <|> unquotedValue <|> return ""
 
 quotedValue :: Parser String
 quotedValue = do
