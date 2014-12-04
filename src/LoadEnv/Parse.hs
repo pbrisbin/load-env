@@ -16,7 +16,7 @@ type Environment = [Variable]
 type Variable = (String, String)
 
 parseEnvironment :: Parser Environment
-parseEnvironment = catMaybes <$> many1 parseLine
+parseEnvironment = catMaybes <$> many parseLine
 
 parseLine :: Parser (Maybe Variable)
 parseLine = try (fmap Just parseVariable) <|> ignoreLine

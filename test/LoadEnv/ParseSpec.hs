@@ -11,7 +11,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do
-    describe "parseEnvironment" $
+    describe "parseEnvironment" $ do
         it "parses variable declarations among comments and blank lines" $ do
             let input = unlines
                     [ "# An environment file"
@@ -27,6 +27,13 @@ spec = do
             case result of
                 Left err -> assertFailure $ "Parse failure: " ++ show err
                 Right v  -> v `shouldBe` expected
+
+        it "parses an empty file into an empty list of variables" $ do
+            let result = parse parseEnvironment "" ""
+
+            case result of
+                Left err -> assertFailure $ "Parse failure: " ++ show err
+                Right v  -> v `shouldBe` []
 
     describe "parseVariable" $ do
         it "reads unquoted variables" $
