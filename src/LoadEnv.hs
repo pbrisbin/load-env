@@ -22,10 +22,10 @@ import LoadEnv.Parse
 -- > FOO='bar'
 --
 -- Declarations may optionally be preceded by @export@, which will be ignored.
--- Lines beginning with @#@ and blank lines are ignored. Trailing whitespace is
--- ignored. Quotes inside quoted values or spaces in unquoted values must be
--- escaped with a backlash. All else will result in a parse error being printed
--- to @stdout@.
+-- Trailing whitespace is ignored. Quotes inside quoted values or spaces in
+-- unquoted values must be escaped with a backlash.
+--
+-- Invalid lines are silently ignored.
 --
 -- If you wish to specify your own file, use @'loadEnvFrom'@. If you wish to
 -- pass your own string or work with the parse result directly, use the

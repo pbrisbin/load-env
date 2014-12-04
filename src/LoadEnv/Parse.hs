@@ -19,24 +19,21 @@ parseEnvironment :: Parser Environment
 parseEnvironment = catMaybes <$> many parseLine
 
 parseLine :: Parser (Maybe Variable)
-parseLine = try (fmap Just parseVariable) <|> ignoreLine
+parseLine = possibly parseVariable
 
-ignoreLine :: Parser (Maybe Variable)
-ignoreLine = (commentLine <|> blankLine) >> return Nothing
+possibly :: Parser a -> Parser (Maybe a)
+possibly p = try (fmap Just p) <|> ignored
 
-commentLine :: Parser ()
-commentLine = do
-    void spaces
-    void $ char '#'
-    void $ manyTill anyToken newline
-
-    return ()
-
-blankLine :: Parser ()
-blankLine = void $ many1 space
+  where
+    ignored = do
+        void $ manyTill anyToken newline
+        return Nothing
 
 parseVariable :: Parser Variable
-parseVariable = (,) <$> identifier <*> value
+parseVariable = do
+    v <- (,) <$> identifier <*> value
+    void $ newline
+    return v
 
 identifier :: Parser String
 identifier = do
@@ -50,8 +47,8 @@ identifier = do
 value :: Parser String
 value = do
     v <- quotedValue <|> unquotedValue <|> return ""
+
     void $ many $ oneOf " \t"
-    void newline
 
     return v
 
