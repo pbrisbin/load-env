@@ -6,6 +6,7 @@ module LoadEnv.Parse
     ) where
 
 import Control.Applicative ((<$>), (<*>))
+import Control.Monad (void)
 import Data.Maybe (catMaybes)
 
 import Text.Parsec
@@ -25,14 +26,14 @@ ignoreLine = (commentLine <|> blankLine) >> return Nothing
 
 commentLine :: Parser ()
 commentLine = do
-    _ <- spaces
-    _ <- char '#'
-    _ <- manyTill anyToken (char '\n')
+    void spaces
+    void $ char '#'
+    void $ manyTill anyToken newline
 
     return ()
 
 blankLine :: Parser ()
-blankLine = many1 space >> return ()
+blankLine = void $ many1 space
 
 parseVariable :: Parser Variable
 parseVariable = (,) <$> identifier <*> value
@@ -42,15 +43,15 @@ identifier = do
     optional $ between spaces spaces $ string "export"
 
     i <- many1 $ letter <|> char '_'
-    _ <- char '='
+    void $ char '='
 
     return i
 
 value :: Parser String
 value = do
     v <- quotedValue <|> unquotedValue <|> return ""
-    _ <- many $ oneOf " \t"
-    _ <- char '\n'
+    void $ many $ oneOf " \t"
+    void newline
 
     return v
 
