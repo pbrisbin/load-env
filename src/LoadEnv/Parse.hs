@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 module LoadEnv.Parse
     ( Environment
     , Variable
@@ -5,7 +6,10 @@ module LoadEnv.Parse
     , parseVariable
     ) where
 
+#if __GLASGOW_HASKELL__ < 710
 import Control.Applicative ((<$>))
+#endif
+
 import Control.Monad (void)
 import Data.Maybe (catMaybes)
 
