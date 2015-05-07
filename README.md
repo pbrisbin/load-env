@@ -1,5 +1,7 @@
 # load-env
 
+[![Build Status](https://travis-ci.org/pbrisbin/load-env.svg?branch=master)](https://travis-ci.org/pbrisbin/load-env)
+
 This is effectively a port of [dotenv][], whose README explains it best:
 
 > Storing configuration in the environment is one of the tenets of a
