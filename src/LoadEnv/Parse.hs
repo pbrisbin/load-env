@@ -46,8 +46,22 @@ parseVariable = do
 
     return (i, v)
 
+-- Environment variable names used by the utilities in the Shell and Utilities
+-- volume of IEEE Std 1003.1-2001 consist solely of uppercase letters, digits,
+-- and the '_' (underscore) from the characters defined in Portable Character
+-- Set and do not begin with a digit.
+--
+-- <http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html>
+--
 identifier :: Parser String
-identifier = many1 $ letter <|> char '_'
+identifier = do
+    x <- upper <|> underscore
+    ys <- many $ upper <|> digit <|> underscore
+
+    return (x:ys)
+
+  where
+    underscore = char '_'
 
 value :: Parser String
 value = quotedValue <|> unquotedValue <|> return ""

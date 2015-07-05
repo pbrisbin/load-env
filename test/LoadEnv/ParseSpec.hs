@@ -78,6 +78,17 @@ spec = do
         it "discards any lines using `export'" $
             "export FOO=bar\n" `shouldParseTo` ("FOO", "bar")
 
+        context "valid identifier" $ do
+            it "consists solely of uppercase letters, digits, and the '_'" $ do
+                "S3_KEY=abc123\n" `shouldParseTo` ("S3_KEY", "abc123")
+                "_S3_KEY=abc123\n" `shouldParseTo` ("_S3_KEY", "abc123")
+                expectFailedParse "S3~KEY=abc123\n"
+                expectFailedParse "S3-KEY=abc123\n"
+                expectFailedParse "S3_key=abc123\n"
+
+            it "does not begine with a digit" $
+                expectFailedParse "3_KEY=abc123\n"
+
 shouldParseTo :: String -> Variable -> Expectation
 shouldParseTo input expected =
     case parse parseVariable "" input of
