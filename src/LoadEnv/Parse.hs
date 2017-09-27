@@ -20,25 +20,22 @@ parseLine :: Parser (Maybe Variable)
 parseLine = possibly parseVariable
 
 possibly :: Parser a -> Parser (Maybe a)
-possibly p = try (fmap Just p) <|> ignored
+possibly p = try (Just <$> p) <|> ignored
 
   where
-    ignored = do
-        void $ manyTill anyToken newline
-        return Nothing
+    ignored = Nothing <$ manyTill anyToken newline
 
 parseVariable :: Parser Variable
 parseVariable = do
     optional $ between spaces spaces $ string "export"
 
     i <- identifier
-    void $ char '='
+    v <- char '=' *> value
 
-    v <- value
     void $ many $ oneOf " \t"
     void $ newline
 
-    return (i, v)
+    pure (i, v)
 
 -- Environment variable names used by the utilities in the Shell and Utilities
 -- volume of IEEE Std 1003.1-2001 consist solely of uppercase letters, digits,
@@ -52,13 +49,13 @@ identifier = do
     x <- upper <|> underscore
     ys <- many $ upper <|> digit <|> underscore
 
-    return (x:ys)
+    pure (x:ys)
 
   where
     underscore = char '_'
 
 value :: Parser String
-value = quotedValue <|> unquotedValue <|> return ""
+value = quotedValue <|> unquotedValue <|> pure ""
 
 quotedValue :: Parser String
 quotedValue = do
@@ -70,4 +67,4 @@ unquotedValue :: Parser String
 unquotedValue = many1 $ try (escaped ' ') <|> noneOf "\"' \n"
 
 escaped :: Char -> Parser Char
-escaped c = string ("\\" ++ [c]) >> return c
+escaped c = c <$ string ("\\" ++ [c])
