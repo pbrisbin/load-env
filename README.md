@@ -19,13 +19,6 @@ This is effectively a port of [dotenv][], whose README explains it best:
 
 This library exposes functions for doing just that.
 
-## Installation
-
-```
-% cabal update
-% cabal install load-env
-```
-
 ## Usage
 
 ```haskell
@@ -37,15 +30,22 @@ main = do
     loadEnv
 
     print =<< lookupEnv "FOO"
-
--- % cat .env
--- FOO=bar
--- % runhaskell main.hs
--- Just "bar"
 ```
 
-## How to run tests
+```console
+% cat .env
+FOO=bar
+% runhaskell main.hs
+Just "bar"
+```
+
+## Development & Test
 
 ```
-cabal configure --enable-tests && cabal build && cabal test
+stack setup
+stack build --pedantic --test
 ```
+
+--
+
+[CHANGELOG](./CHANGELOG.md) | [LICENSE](./LICENSE)
