@@ -1,0 +1,33 @@
+name: load-env
+version: '0.1.1'
+synopsis: Load environment variables from a file.
+description: >
+  Parse a .env file and load any declared variables into the current process's
+  environment. This allows for a .env file to specify development-friendly
+  defaults for configuration values normally set in the deployment environment.
+category: Configuration
+author: Pat Brisbin <pbrisbin@gmail.com>
+maintainer: Pat Brisbin <pbrisbin@gmail.com>
+license: BSD3
+github: pbrisbin/load-env
+dependencies:
+- directory
+- parsec
+library:
+  source-dirs: src
+  ghc-options: -Wall
+  exposed-modules:
+  - LoadEnv
+  - LoadEnv.Parse
+  dependencies:
+  - base >=4.8.0 && <5
+tests:
+  spec:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: -Wall
+    dependencies:
+    - base
+    - load-env
+    - hspec
+    - HUnit
