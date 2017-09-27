@@ -1,9 +1,11 @@
-module LoadEnv.ParseSpec (main, spec) where
-
-import Text.Parsec (parse)
+module LoadEnv.ParseSpec
+    ( main
+    , spec
+    ) where
 
 import Test.Hspec
-import Test.HUnit
+import Text.Parsec (parse)
+
 import LoadEnv.Parse
 
 main :: IO ()
@@ -13,90 +15,104 @@ spec :: Spec
 spec = do
     describe "parseEnvironment" $ do
         it "parses variable declarations among comments and blank lines" $ do
-            let input = unlines
+            let env = unlines
                     [ "# An environment file"
                     , "FOO=bar"
                     , "BAZ=\"bat\""
+                    , "BAT=\"multi-"
+                    , "pass"
+                    , "\""
                     , ""
                     , "# vim ft:sh:"
                     ]
-                expected = [("FOO", "bar"), ("BAZ", "bat")]
 
-                result = parse parseEnvironment "" input
-
-            case result of
-                Left err -> assertFailure $ "Parse failure: " ++ show err
-                Right v  -> v `shouldBe` expected
+            parse parseEnvironment "" env `shouldBe` Right
+                [ ("FOO", "bar")
+                , ("BAZ", "bat")
+                , ("BAT", "multi-\npass\n")
+                ]
 
         it "parses an empty file into an empty list of variables" $ do
-            let result = parse parseEnvironment "" ""
+            parse parseEnvironment "" "" `shouldBe` Right []
 
-            case result of
-                Left err -> assertFailure $ "Parse failure: " ++ show err
-                Right v  -> v `shouldBe` []
 
     describe "parseVariable" $ do
         it "reads unquoted variables" $
-            "FOO=bar\n" `shouldParseTo` ("FOO", "bar")
+            parse parseVariable "" "FOO=bar\n" `shouldBe` Right ("FOO", "bar")
 
         it "reads quoted variables" $ do
-            "FOO=\"bar\"\n" `shouldParseTo` ("FOO", "bar")
-            "FOO='bar'\n" `shouldParseTo` ("FOO", "bar")
+            parse parseVariable "" "FOO=\"bar\"\n"
+                `shouldBe` Right ("FOO", "bar")
+            parse parseVariable "" "FOO='bar'\n"
+                `shouldBe` Right ("FOO", "bar")
+
+        it "allows newlines in quoted variables" $ do
+            parse parseVariable "" "FOO=\"foo\nbar\"\n"
+                `shouldBe` Right ("FOO", "foo\nbar")
 
         it "handles empty values" $
-            "FOO=\n" `shouldParseTo` ("FOO", "")
+            parse parseVariable "" "FOO=\n" `shouldBe` Right ("FOO", "")
 
         it "handles empty quoted values" $ do
-            "FOO=\"\"\n" `shouldParseTo` ("FOO", "")
-            "FOO=''\n" `shouldParseTo` ("FOO", "")
+            parse parseVariable "" "FOO=\"\"\n" `shouldBe` Right ("FOO", "")
+            parse parseVariable "" "FOO=''\n" `shouldBe` Right ("FOO", "")
 
         it "handles underscored variables" $
-            "FOO_BAR=baz\n" `shouldParseTo` ("FOO_BAR", "baz")
+            parse parseVariable "" "FOO_BAR=baz\n"
+                `shouldBe` Right ("FOO_BAR", "baz")
 
         it "treats leading spaces as invalid" $
-            expectFailedParse "  FOO=bar\n"
+            parse parseVariable "" "  FOO=bar\n"
+                `shouldContainError` "unexpected \"F\""
 
         it "treats spaces around equals as invalid" $
-            expectFailedParse "FOO = bar\n"
+            parse parseVariable "" "FOO = bar\n"
+                `shouldContainError` "unexpected \" \""
 
         it "treats unquoted spaces as invalid" $
-            expectFailedParse "FOO=bar baz\n"
+            parse parseVariable "" "FOO=bar baz\n"
+                `shouldContainError` "unexpected \"b\""
 
         it "treats unbalanced quotes as invalid" $ do
-            expectFailedParse "FOO=\"bar\n"
-            expectFailedParse "FOO='bar\n"
-            expectFailedParse "FOO=bar\"\n"
-            expectFailedParse "FOO=bar'\n"
+            parse parseVariable "" "FOO=\"bar\n"
+                `shouldContainError` "unexpected end of input"
+            parse parseVariable "" "FOO='bar\n"
+                `shouldContainError` "unexpected end of input"
+            parse parseVariable "" "FOO=bar\"\n"
+                `shouldContainError` "unexpected \"\\\"\""
+            parse parseVariable "" "FOO=bar'\n"
+                `shouldContainError` "unexpected \"\'\""
 
         it "handles escaped quotes" $ do
-            "FOO=\"bar\\\"baz\"\n" `shouldParseTo` ("FOO", "bar\"baz")
-            "FOO='bar\\'baz'\n" `shouldParseTo` ("FOO", "bar'baz")
+            parse parseVariable "" "FOO=\"bar\\\"baz\"\n"
+                `shouldBe` Right ("FOO", "bar\"baz")
+            parse parseVariable "" "FOO='bar\\'baz'\n"
+                `shouldBe` Right ("FOO", "bar'baz")
 
         it "handles escaped spaces" $
-            "FOO=bar\\ baz\n" `shouldParseTo` ("FOO", "bar baz")
+            parse parseVariable "" "FOO=bar\\ baz\n"
+                `shouldBe` Right ("FOO", "bar baz")
 
         it "discards any lines using `export'" $
-            "export FOO=bar\n" `shouldParseTo` ("FOO", "bar")
+            parse parseVariable "" "export FOO=bar\n"
+                `shouldBe` Right ("FOO", "bar")
 
-        context "valid identifier" $ do
-            it "consists solely of uppercase letters, digits, and the '_'" $ do
-                "S3_KEY=abc123\n" `shouldParseTo` ("S3_KEY", "abc123")
-                "_S3_KEY=abc123\n" `shouldParseTo` ("_S3_KEY", "abc123")
-                expectFailedParse "S3~KEY=abc123\n"
-                expectFailedParse "S3-KEY=abc123\n"
-                expectFailedParse "S3_key=abc123\n"
+        it "requires valid environment variable identifies" $ do
+            parse parseVariable "" "S3_KEY=abc123\n"
+                `shouldBe` Right ("S3_KEY", "abc123")
+            parse parseVariable "" "_S3_KEY=abc123\n"
+                `shouldBe` Right ("_S3_KEY", "abc123")
 
-            it "does not begine with a digit" $
-                expectFailedParse "3_KEY=abc123\n"
+            parse parseVariable "" "S3~KEY=abc123\n"
+                `shouldContainError` "unexpected \"~\""
+            parse parseVariable "" "S3-KEY=abc123\n"
+                `shouldContainError` "unexpected \"-\""
+            parse parseVariable "" "S3_key=abc123\n"
+                `shouldContainError` "unexpected \"k\""
+            parse parseVariable "" "3_KEY=abc123\n"
+                `shouldContainError` "unexpected \"3\""
 
-shouldParseTo :: String -> Variable -> Expectation
-shouldParseTo input expected =
-    case parse parseVariable "" input of
-        Left err -> assertFailure $ "Expected parse to succeed: " ++ show err
-        Right actual -> actual `shouldBe` expected
-
-expectFailedParse :: String -> Expectation
-expectFailedParse input =
-    case parse parseVariable "" input of
-        Left _ -> assertBool "" True -- pass
-        Right v -> assertFailure $ "Expected parse to fail: " ++ show v
+shouldContainError :: Show a => Either a b -> String -> Expectation
+v `shouldContainError` msg = either
+    (\e -> show e `shouldContain` msg)
+    (\_ -> expectationFailure "Expected no parse") v
