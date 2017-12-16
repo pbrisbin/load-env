@@ -33,7 +33,7 @@ parseVariable = do
     v <- char '=' *> value
 
     void $ many $ oneOf " \t"
-    void $ newline
+    void newline
 
     pure (i, v)
 
