@@ -1,14 +1,12 @@
-module LoadEnvSpec (main, spec) where
+module LoadEnvSpec
+    ( spec
+    ) where
 
 import Control.Monad (when)
+import LoadEnv
 import System.Directory (doesFileExist, removeFile)
 import System.Environment (lookupEnv)
 import Test.Hspec
-
-import LoadEnv
-
-main :: IO ()
-main = hspec spec
 
 spec :: Spec
 spec = after_ cleanup $
