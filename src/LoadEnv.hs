@@ -5,11 +5,10 @@ module LoadEnv
 
 
 import Control.Monad (when)
+import LoadEnv.Parse
 import System.Directory (doesFileExist)
 import System.Environment (setEnv)
 import Text.Parsec.String (parseFromFile)
-
-import LoadEnv.Parse
 
 -- |
 --
