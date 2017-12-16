@@ -46,6 +46,6 @@ stack setup
 stack build --pedantic --test
 ```
 
---
+---
 
 [CHANGELOG](./CHANGELOG.md) | [LICENSE](./LICENSE)
