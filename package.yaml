@@ -1,6 +1,6 @@
 ---
 name: load-env
-version: '0.1.2'
+version: '0.2.0.0'
 synopsis: Load environment variables from a file.
 description: >
   Parse a .env file and load any declared variables into the current process's
