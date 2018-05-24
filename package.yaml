@@ -21,6 +21,8 @@ ghc-options: -Wall
 
 library:
   source-dirs: src
+  dependencies:
+    - filepath
 
 tests:
   spec:
@@ -29,3 +31,9 @@ tests:
     dependencies:
       - hspec
       - load-env
+      - temporary
+  doctest:
+    main: Main.hs
+    source-dirs: doctest
+    dependencies:
+      - doctest

@@ -20,13 +20,18 @@
 module LoadEnv
     ( loadEnv
     , loadEnvFrom
+    , loadEnvFromAbsolute
     ) where
 
-
-import Control.Monad (when)
+import Control.Monad ((<=<))
+import Data.Bool (bool)
+import Data.Foldable (for_, traverse_)
+import Data.List (inits)
 import LoadEnv.Parse
-import System.Directory (doesFileExist)
+import System.Directory
+    (doesFileExist, findFile, getCurrentDirectory, makeAbsolute)
 import System.Environment (setEnv)
+import System.FilePath (isRelative, joinPath, splitDirectories)
 import Text.Parsec.String (parseFromFile)
 
 -- | @'loadEnvFrom' \".env\"@
@@ -51,8 +56,36 @@ loadEnv = loadEnvFrom ".env"
 -- to avoid this.
 --
 loadEnvFrom :: FilePath -> IO ()
-loadEnvFrom fp = do
-    e <- doesFileExist fp
+loadEnvFrom name = do
+    mFile <- if isRelative name
+        then flip findFile name . takeDirectories =<< getCurrentDirectory
+        else bool Nothing (Just name) <$> doesFileExist name
 
-    when e $ parseFromFile parseEnvironment fp >>=
-        either print (mapM_ $ uncurry setEnv)
+    for_ mFile $ \file -> do
+        result <- parseFromFile parseEnvironment file
+        either print (traverse_ $ uncurry setEnv) result
+
+-- | @'loadEnvFrom'@, but don't traverse up the directory tree
+loadEnvFromAbsolute :: FilePath -> IO ()
+loadEnvFromAbsolute = loadEnvFrom <=< makeAbsolute
+
+-- | Get all directory names of a directory
+--
+-- Includes itself as the first element of the output.
+--
+-- >>> takeDirectories "/foo/bar/baz"
+-- ["/foo/bar/baz","/foo/bar","/foo","/"]
+--
+-- Leading path-separator is meaningful, and determines if the root directory is
+-- included or not.
+--
+-- >>> takeDirectories "foo/bar/baz"
+-- ["foo/bar/baz","foo/bar","foo"]
+--
+-- Trailing path-separator is not meaningful.
+--
+-- >>> takeDirectories "/foo/bar/baz/"
+-- ["/foo/bar/baz","/foo/bar","/foo","/"]
+--
+takeDirectories :: FilePath -> [FilePath]
+takeDirectories = map joinPath . reverse . drop 1 . inits . splitDirectories
