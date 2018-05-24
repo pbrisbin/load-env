@@ -1,5 +1,2 @@
 ---
-resolver: lts-9.18
-packages:
-  - '.'
-extra-deps: []
+resolver: lts-11.10
