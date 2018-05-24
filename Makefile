@@ -20,6 +20,10 @@ lint:
 	hlint .
 	weeder .
 
+.PHONY: clean
+clean:
+	stack clean
+
 .PHONY: check-nightly
 check-nightly:
 	stack setup --resolver nightly
