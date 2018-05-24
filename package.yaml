@@ -14,23 +14,26 @@ github: pbrisbin/load-env
 
 dependencies:
   - base >=4.8.0 && <5
-  - directory
-  - parsec
 
 ghc-options: -Wall
 
 library:
   source-dirs: src
   dependencies:
+    - directory
     - filepath
+    - filepath
+    - parsec
 
 tests:
   spec:
     main: Spec.hs
     source-dirs: test
     dependencies:
+      - directory
       - hspec
       - load-env
+      - parsec
       - temporary
   doctest:
     main: Main.hs
