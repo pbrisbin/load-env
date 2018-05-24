@@ -19,3 +19,8 @@ test:
 lint:
 	hlint .
 	weeder .
+
+.PHONY: check-nightly
+check-nightly:
+	stack setup --resolver nightly
+	stack build --resolver nightly --pedantic --test
