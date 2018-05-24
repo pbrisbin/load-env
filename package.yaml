@@ -17,15 +17,15 @@ dependencies:
   - directory
   - parsec
 
+ghc-options: -Wall
+
 library:
   source-dirs: src
-  ghc-options: -Wall
 
 tests:
   spec:
     main: Spec.hs
     source-dirs: test
-    ghc-options: -Wall
     dependencies:
       - load-env
       - hspec
