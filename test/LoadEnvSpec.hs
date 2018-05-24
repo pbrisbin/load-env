@@ -4,12 +4,12 @@ module LoadEnvSpec
 
 import Control.Monad (when)
 import LoadEnv
-import System.Directory (doesFileExist, removeFile)
-import System.Environment (lookupEnv)
+import System.Directory
+import System.Environment
 import Test.Hspec
 
 spec :: Spec
-spec = after_ cleanup $
+spec = after_ cleanup $ do
     describe "loadEnv" $ do
         it "loads environment variables from ./.env if present" $ do
             writeFile envFile $ unlines
@@ -31,6 +31,8 @@ spec = after_ cleanup $
 
 cleanup :: IO ()
 cleanup = do
+    unsetEnv "FOO"
+    unsetEnv "BAR"
     e <- doesFileExist envFile
     when e $ removeFile envFile
 
