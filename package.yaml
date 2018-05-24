@@ -27,5 +27,5 @@ tests:
     main: Spec.hs
     source-dirs: test
     dependencies:
-      - load-env
       - hspec
+      - load-env
