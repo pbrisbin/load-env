@@ -11,6 +11,9 @@ author: Pat Brisbin <pbrisbin@gmail.com>
 maintainer: Pat Brisbin <pbrisbin@gmail.com>
 license: BSD3
 github: pbrisbin/load-env
+extra-source-files:
+  - README.md
+  - CHANGELOG.md
 
 dependencies:
   - base >=4.8.0 && <5
