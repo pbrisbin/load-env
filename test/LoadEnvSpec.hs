@@ -39,6 +39,17 @@ spec = after_ cleanup $ do
 
             lookupEnv "FOO" `shouldReturn` Just "bar"
 
+        it "loads only the nearest file" $ do
+            inTempDirectory $ do
+                writeFile ".env.test" "FOO=\"bar\"\n"
+                inNewDirectory "foo/bar" $ do
+                    writeFile ".env.test" "BAR=\"baz\"\n"
+                    inNewDirectory "baz/bat" $ do
+                        loadEnvFrom ".env.test"
+
+            lookupEnv "BAR" `shouldReturn` Just "baz"
+            lookupEnv "FOO" `shouldReturn` Nothing
+
     describe "loadEnvFromAbsolute" $ do
         it "does not traverse up the directory tree" $ do
             inTempDirectory $ do
