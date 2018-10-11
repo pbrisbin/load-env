@@ -97,13 +97,15 @@ spec = do
                 `shouldBe` Right ("S3_KEY", "abc123")
             parse parseVariable "" "_S3_KEY=abc123\n"
                 `shouldBe` Right ("_S3_KEY", "abc123")
+            parse parseVariable "" "S3_key=abc123\n"
+                `shouldBe` Right ("S3_key", "abc123")
+            parse parseVariable "" "s3_key=abc123\n"
+                `shouldBe` Right ("s3_key", "abc123")
 
             parse parseVariable "" "S3~KEY=abc123\n"
                 `shouldContainError` "unexpected \"~\""
             parse parseVariable "" "S3-KEY=abc123\n"
                 `shouldContainError` "unexpected \"-\""
-            parse parseVariable "" "S3_key=abc123\n"
-                `shouldContainError` "unexpected \"k\""
             parse parseVariable "" "3_KEY=abc123\n"
                 `shouldContainError` "unexpected \"3\""
 

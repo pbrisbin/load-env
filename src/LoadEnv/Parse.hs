@@ -38,16 +38,22 @@ parseVariable = do
     pure (i, v)
 
 -- Environment variable names used by the utilities in the Shell and Utilities
--- volume of IEEE Std 1003.1-2001 consist solely of uppercase letters, digits,
--- and the '_' (underscore) from the characters defined in Portable Character
--- Set and do not begin with a digit.
+-- volume of POSIX.1-2017 consist solely of uppercase letters, digits,
+-- and the <underscore> ( '_' ) from the characters defined in Portable
+-- Character Set and do not begin with a digit. Other characters may be
+-- permitted by an implementation; applications shall tolerate the presence
+-- of such names. Uppercase and lowercase letters shall retain their unique
+-- identities and shall not be folded together. The name space of environment
+-- variable names containing lowercase letters is reserved for applications.
+-- Applications can define any environment variables with names from this name
+-- space without modifying the behavior of the standard utilities.
 --
--- <http://pubs.opengroup.org/onlinepubs/000095399/basedefs/xbd_chap08.html>
+-- <http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html>
 --
 identifier :: Parser String
 identifier = do
-    x <- upper <|> underscore
-    ys <- many $ upper <|> digit <|> underscore
+    x <- upper <|> lower <|> underscore
+    ys <- many $ upper <|>  lower <|> digit <|> underscore
 
     pure (x:ys)
 
