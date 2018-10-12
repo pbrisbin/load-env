@@ -1,6 +1,10 @@
-## [*Unreleased*](https://github.com/pbrisbin/load-env/compare/master...v0.2.0.1)
+## [*Unreleased*](https://github.com/pbrisbin/load-env/compare/v0.2.0.2...master)
 
 None
+
+## [v0.2.0.2](https://github.com/pbrisbin/load-env/compare/v0.2.0.1...v0.2.0.2)
+
+- Allow lower-case characters in variable names [@denibertovic](https://github.com/pbrisbin/load-env/pull/4)
 
 ## [v0.2.0.1](https://github.com/pbrisbin/load-env/compare/v0.2.0.0...v0.2.0.1)
 
