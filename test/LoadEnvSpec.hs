@@ -25,6 +25,15 @@ spec = after_ cleanup $ do
             mbar `shouldBe` Just "bar"
             mbat `shouldBe` Just "bat"
 
+        it "does not override pre-existing variables" $ do
+            writeFile envFile $ unlines ["FOO=bar"]
+            setEnv "FOO" "baz"
+
+            loadEnvFrom envFile
+
+            mbar <- lookupEnv "FOO"
+            mbar `shouldBe` Just "baz"
+
         it "does not fail if the file is not present" $ do
             loadEnvFrom "i-do-not-exist"
 

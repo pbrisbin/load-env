@@ -23,14 +23,15 @@ module LoadEnv
     , loadEnvFromAbsolute
     ) where
 
-import Control.Monad ((<=<))
+import Control.Monad ((<=<), unless)
 import Data.Bool (bool)
+import Data.Maybe (isJust)
 import Data.Foldable (for_, traverse_)
 import Data.List (inits)
 import LoadEnv.Parse
 import System.Directory
     (doesFileExist, findFile, getCurrentDirectory, makeAbsolute)
-import System.Environment (setEnv)
+import System.Environment (lookupEnv, setEnv)
 import System.FilePath (isRelative, joinPath, splitDirectories)
 import Text.Parsec.String (parseFromFile)
 
@@ -63,7 +64,12 @@ loadEnvFrom name = do
 
     for_ mFile $ \file -> do
         result <- parseFromFile parseEnvironment file
-        either print (traverse_ $ uncurry setEnv) result
+        either print (traverse_ $ uncurry defaultEnv) result
+
+defaultEnv :: String -> String -> IO ()
+defaultEnv k v = do
+    exists <- isJust <$> lookupEnv k
+    unless exists $ setEnv k v
 
 -- | @'loadEnvFrom'@, but don't traverse up the directory tree
 loadEnvFromAbsolute :: FilePath -> IO ()
