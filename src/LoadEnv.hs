@@ -23,11 +23,11 @@ module LoadEnv
     , loadEnvFromAbsolute
     ) where
 
-import Control.Monad ((<=<), unless)
+import Control.Monad (unless, (<=<))
 import Data.Bool (bool)
-import Data.Maybe (isJust)
 import Data.Foldable (for_, traverse_)
 import Data.List (inits)
+import Data.Maybe (isJust)
 import LoadEnv.Parse
 import System.Directory
     (doesFileExist, findFile, getCurrentDirectory, makeAbsolute)
