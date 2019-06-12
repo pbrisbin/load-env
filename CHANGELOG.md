@@ -1,6 +1,29 @@
-## [*Unreleased*](https://github.com/pbrisbin/load-env/compare/v0.2.0.2...master)
+## [*Unreleased*](https://github.com/pbrisbin/load-env/compare/v0.2.1.0...master)
 
 None
+
+## [v0.2.1.0](https://github.com/pbrisbin/load-env/compare/v0.2.0.2...v0.2.1.0)
+
+- Don't override values already set in the environment
+
+  Given a hypothetical program `load-env`, which uses one of our `loadEnv`
+  functions on `stdin`:
+
+  Previously,
+
+  ```
+  FOO=bar load-env <<EOM
+  FOO=bat
+  EOM
+  ```
+
+  would override `FOO` to `bat` when `load-env` ran. But now, it will see `FOO`
+  is already `bar` and leave it.
+
+  This is better behavior under the assumption that a `.env` file is meant to
+  specify *defaults* in the case of nothing explicit. When there are explicit
+  values in the environment, it's most likely that our user indeed wants them
+  respected.
 
 ## [v0.2.0.2](https://github.com/pbrisbin/load-env/compare/v0.2.0.1...v0.2.0.2)
 
