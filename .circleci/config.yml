@@ -1,35 +1,24 @@
----
-version: 2.0
+version: 2.1
 
-jobs:
-  build:
-    docker:
-      - image: fpco/stack-build:lts-11.0
-    steps:
-      - checkout
-      - run:
-          name: Digest
-          command: |
-            git ls-files | xargs md5sum > digest
-      - restore_cache:
-          keys:
-            - v1-{{ .Branch }}-{{ checksum "digest" }}
-            - v1-{{ .Branch }}-
-            - v1-master-
-      - run:
-          name: Dependencies
-          command: make setup
-      - run:
-          name: Build
-          command: make build
-      - save_cache:
-          key: v1-{{ .Branch }}-{{ checksum "digest" }}
-          paths:
-            - ~/.stack
-            - ./.stack-work
-      - run:
-          name: Test
-          command: make test
-      - run:
-          name: Lint
-          command: make lint
+orbs:
+  stack-build: pbrisbin/stack-build@2.0.0
+
+workflows:
+  commit:
+    jobs:
+      - stack-build/build-test-lint:
+          name: "default"
+      - stack-build/build-test-nightly:
+          name: "nightly"
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - stack-build/build-test-nightly:
+          name: "nightly"
