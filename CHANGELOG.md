@@ -1,4 +1,4 @@
-## [*Unreleased*](https://github.com/pbrisbin/load-env/compare/v0.2.1.0...master)
+## [*Unreleased*](https://github.com/pbrisbin/load-env/compare/v0.2.1.0...main)
 
 None
 
