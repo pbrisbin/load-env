@@ -1,1 +1,4 @@
 resolver: lts-15.1
+
+# Fix weeder with stack-2.0
+ghc-options: { "$locals": -ddump-to-file -ddump-hi }
