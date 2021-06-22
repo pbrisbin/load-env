@@ -1,4 +1,4 @@
-## [*Unreleased*](https://github.com/pbrisbin/load-env/compare/v0.2.1.0...main)
+## [_Unreleased_](https://github.com/pbrisbin/load-env/compare/v0.2.1.0...main)
 
 None
 
@@ -21,13 +21,14 @@ None
   is already `bar` and leave it.
 
   This is better behavior under the assumption that a `.env` file is meant to
-  specify *defaults* in the case of nothing explicit. When there are explicit
+  specify _defaults_ in the case of nothing explicit. When there are explicit
   values in the environment, it's most likely that our user indeed wants them
   respected.
 
 ## [v0.2.0.2](https://github.com/pbrisbin/load-env/compare/v0.2.0.1...v0.2.0.2)
 
-- Allow lower-case characters in variable names [@denibertovic](https://github.com/pbrisbin/load-env/pull/4)
+- Allow lower-case characters in variable names
+  [@denibertovic](https://github.com/pbrisbin/load-env/pull/4)
 
 ## [v0.2.0.1](https://github.com/pbrisbin/load-env/compare/v0.2.0.0...v0.2.0.1)
 
