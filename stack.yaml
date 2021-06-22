@@ -1,6 +1,1 @@
 resolver: lts-18.0
-
-extra-deps:
-  # for weeder
-  - dhall-1.37.1@sha256:447031286e8fe270b0baacd9cc5a8af340d2ae94bb53b85807bee93381ca5287,35080
-  - generic-lens-2.0.0.0@sha256:7409fa0ce540d0bd41acf596edd1c5d0c0ab1cd1294d514cf19c5c24e8ef2550,3866
