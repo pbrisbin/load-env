@@ -1,4 +1,4 @@
-name: Nightly Resolver
+name: Stackage nightly
 
 on:
   pull_request:
