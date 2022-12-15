@@ -1,7 +1,9 @@
 # load-env
 
+[![Hackage](https://img.shields.io/hackage/v/load-env.svg?style=flat)](https://hackage.haskell.org/package/load-env)
+[![Stackage Nightly](http://stackage.org/package/load-env/badge/nightly)](http://stackage.org/nightly/package/load-env)
+[![Stackage LTS](http://stackage.org/package/load-env/badge/lts)](http://stackage.org/lts/package/shellwords)
 [![CI](https://github.com/pbrisbin/load-env/actions/workflows/ci.yml/badge.svg)](https://github.com/pbrisbin/load-env/actions/workflows/ci.yml)
-[![Stackage nightly](https://github.com/pbrisbin/bugsnag-haskell/actions/workflows/nightly.yml/badge.svg)](https://github.com/pbrisbin/bugsnag-haskell/actions/workflows/nightly.yml)
 
 This is effectively a port of [dotenv][], whose README explains it best:
 
