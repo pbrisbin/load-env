@@ -1,5 +1,11 @@
 # load-env
 
+**Archived**: this project is no longer seeing updates. I (highly) recommend
+you migrate to [dotenv-hs][], which has the same usage, the same features, and
+much more.
+
+[dotenv-hs]: https://github.com/stackbuilders/dotenv-hs#readme
+
 [![Hackage](https://img.shields.io/hackage/v/load-env.svg?style=flat)](https://hackage.haskell.org/package/load-env)
 [![Stackage Nightly](http://stackage.org/package/load-env/badge/nightly)](http://stackage.org/nightly/package/load-env)
 [![Stackage LTS](http://stackage.org/package/load-env/badge/lts)](http://stackage.org/lts/package/shellwords)
